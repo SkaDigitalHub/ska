@@ -151,21 +151,67 @@
             box-shadow: 0 8px 20px rgba(108, 77, 246, 0.6);
         }
         
-        .success-message {
+        .success-page {
             display: none;
-            text-align: center;
-            padding: 30px;
-            background-color: rgba(77, 246, 200, 0.1);
-            border-radius: 12px;
-            margin-top: 20px;
-            color: var(--accent);
-            border: 1px solid rgba(77, 246, 200, 0.3);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--dark) 0%, #1A1A2E 100%);
+            z-index: 1000;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
         
-        .success-message i {
-            font-size: 50px;
+        .success-container {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: var(--glow);
+            width: 100%;
+            max-width: 500px;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .success-container i {
+            font-size: 80px;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+        
+        .success-container h2 {
+            font-size: 28px;
             margin-bottom: 15px;
-            display: block;
+            color: white;
+        }
+        
+        .success-container p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        .whatsapp-button {
+            display: inline-block;
+            background: #25D366;
+            color: white;
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 18px;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .whatsapp-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.5);
         }
         
         footer {
@@ -207,8 +253,68 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(108, 77, 246, 0.6);
         }
+
+        .checkbox-group {
+    margin-top: 8px;
+}
+
+.checkbox-option {
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-left: 35px;
+    cursor: pointer;
+    font-size: 16px;
+    user-select: none;
+}
+
+.checkbox-option input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkbox-checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #fff;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.checkbox-option:hover input ~ .checkbox-checkmark {
+    border-color: #4CAF50;
+}
+
+.checkbox-option input:checked ~ .checkbox-checkmark {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+}
+
+.checkbox-checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.checkbox-option input:checked ~ .checkbox-checkmark:after {
+    display: block;
+}
         
-        @media (max-width: 600px) {
+         @media (max-width: 600px) {
             .container {
                 padding: 20px;
             }
@@ -216,15 +322,20 @@
             .header h1 {
                 font-size: 28px;
             }
+            
+            .success-container {
+                padding: 30px 20px;
+            }
         }
     </style>
 </head>
 <body>
 <div>
-    <img class="banner" src="C:\Users\HP 250 G5\Desktop\GRWC\Monday.png">
+    <img class="banner" src="images\Monday.png">
 </div>
     <div class="container">
         <div class="header">
+            <br>
             <h5>WELCOME TO PROPHET STEPHEN KPODO A. PARTNERS' PAGE</h5>
             <h1>PARTNERSHIP FORM</h1> 
             <p>Fill out the form below to confirm your partnership with the prophet</p>
@@ -234,16 +345,17 @@
         <div class="form-container">
             <!-- Form with direct POST action to Google Forms -->
             <form 
-                action="https://docs.google.com/forms/d/e/1FAIpQLSeRSLZy0J9PFSKhdpgo6yYqAAjAdxdbQ8q9ylbgtbB2MZwIsw/formResponse" 
+                action="https://docs.google.com/forms/d/e/1FAIpQLSfw1Q-08FMTUS6Rw0a6oHQuJVHqmyjp4ypcyEApqLogQRfOSA/formResponse" 
                 method="POST"
                 target="hiddenFrame"
             >
-            <h2>--- Personal Detail ---</h2>
+            <h4>--- Personal Detail ---</h4>
+            <br>
                 <div class="form-group">
                     <label for="name" class="required">Surname</label>
                     <div class="icon-input">
                         <i class="fas fa-user"></i>
-                        <input type="text" id="surname" name="entry.54645625" required placeholder="Surname">
+                        <input type="text" id="surname" name="entry.1299642018" required placeholder="Surname">
                     </div>
                 </div>
                 
@@ -251,15 +363,15 @@
                     <label for="name" class="required">First Name</label>
                     <div class="icon-input">
                         <i class="fas fa-user-circle"></i>
-                        <input type="text" id="firstname" name="entry.1712394816" placeholder="Enter First names">
+                        <input type="text" id="firstname" name="entry.1263795737" placeholder="Enter First names">
                     </div>
                 </div>
-                             
+                
                 <div class="form-group">
                     <label for="sex" class="required">Gender</label>
                     <div class="icon-input">
                     <i class="fas fa-restroom"></i>
-                       <select id="sex" name="entry.1866598140" required>
+                       <select id="sex" name="entry.1889561578" required>
                            <option value="" disabled selected></option>
                            <option value="M">Male</option>
                            <option value="F">Female</option>
@@ -270,8 +382,8 @@
                 <div class="form-group">
                     <label for="location" class="required">location</label>
                     <div class="icon-input">
-                         <i class="fas fa-calendar"></i>
-                         <input type="text" id="location" name="entry.425732788" required>
+                         <i class="fas fa-map-location-dot"></i>
+                         <input type="text" id="location" name="entry.1848737444" required>
                     </div>
                 </div>
                 
@@ -279,7 +391,7 @@
                     <label for="phone" class="required">Contact</label>
                     <div class="icon-input">
                        <i class="fas fa-phone-alt"></i>
-                       <input type="tel" id="phone" name="entry.122132461" placeholder="+233546712356" required>
+                       <input type="tel" id="phone" name="entry.1192771947" placeholder="+233546712356" required>
                     </div>
                 </div>
 
@@ -292,21 +404,23 @@
                 </div>
 
                 <br>
-                <h2>--- Parnership Agreement ---</h2>
+                <br>
+                <h2 style="margin: 0 auto; text-align: center;">--- Partnership Agreement ---</h2>
+                <br>
 
                 <div class="form-group">
                     <label for="amount" class="required">Amount GH¢</label>
                     <div class="icon-input">
                         <i class="fas fa-money-bill"></i>
-                        <input type="number" id="amount" name="entry.417470434" required placeholder="Enter amount" step="0.01" min="0">
+                        <input type="number" id="amount" name="entry.131065789" required placeholder="Enter amount" step="0.1" min="0">
                     </div>
                 </div>
     
                 <div class="form-group">
                     <label for="reminder" class="required">Do you need a <b>Reminder?</b></label>
                     <div class="icon-input">
-                        <i class="fas fa-money-bill"></i>
-                        <select id="reminder" name="entry.1247494025" required>
+                        <i class="fas fa-calendar-alt"></i>
+                        <select id="reminder" name="entry.101927143" required>
                            <option value="" disabled selected></option>
                            <option value="YES">YES</option>
                            <option value="NO">NO</option>
@@ -317,8 +431,8 @@
                 <div class="form-group">
                     <label for="status" class="required">Remind me by</label>
                     <div class="icon-input">
-                        <i class="fas fa-money-bill"></i>
-                        <select id="status" name="entry.1247494025" required>
+                        <i class="fas fa-bell"></i>
+                        <select id="status" name="entry.1653791655" required>
                            <option value="" disabled selected></option>
                            <option value="WhatsApp">WhatsApp</option>
                            <option value="Phone Call">Phone Call</option>
@@ -330,15 +444,15 @@
 
                 <div class="form-group">
                    <label for="agree" class="required">Terms & Conditions Agreement</label>
-                   <div class="radio-group">
-                       <label class="radio-option">
-                          <input id="agree" type="radio" name="entry.1247494025" value="AGREE" required>
-                          <span class="radio-checkmark"></span>
+                   <div class="checkbox-group">
+                       <label class="checkbox-option">
+                          <input id="agree" type="checkbox" name="entry.517536385" value="AGREE" required>
+                          <span class="checkbox-checkmark"></span>
                           I agree to the Monthly Partnership Terms and Conditions
                    </label>
                    </div>
                 </div>
-
+    
  
                 <button type="submit">Submit</button>
                 
@@ -350,11 +464,19 @@
     <!-- Hidden iframe to handle form submission without leaving the page -->
     <iframe name="hiddenFrame" style="display: none;"></iframe>
     
-    <div class="success-message" id="successMessage">
-        <i class="fas fa-check-circle"></i>
-        <h2>Click to join the partners</h2>
-        <a class="button" href="https://chat.whatsapp.com/Ha3v5uYuRZe9nVidNvDQPs?mode=wwt"></a>
+    <!-- Success Page (appears as new page) -->
+    <div class="success-page" id="successPage">
+        <div class="success-container">
+            <i class="fas fa-check-circle"></i>
+            <h2>Partnership Submitted Successfully!</h2>
+            <p>Thank you for your partnership with Prophet Stephen Kpodo A. Your support is greatly appreciated.</p>
+            <p>Click the button below to join the partners' WhatsApp group:</p>
+            <a class="whatsapp-button" href="https://chat.whatsapp.com/Ha3v5uYuRZe9nVidNvDQPs?mode=wwt" target="_blank">
+                <i class="fab fa-whatsapp"></i> Join WhatsApp Group
+            </a>
+        </div>
     </div>
+
     
     <footer>
         <p>© 2025 Ska Digital Hub. All rights reserved.</p>
@@ -374,7 +496,7 @@
             const amount = document.getElementById('amount').value;
             const reminder = document.getElementById('reminder').value;
             const status = document.getElementById('status').value;
-            const agree = document.getElementById('agree').value;
+            const agree = document.getElementById('agree').checked;
             
             
             if (!surname || !firstname || !location || !phone || !email || !amount || !reminder || !status || !agree) {
@@ -385,19 +507,16 @@
             // Submit the form
             this.submit();
             
-            // Show success message
-            document.getElementById('successMessage').style.display = 'block';
+            // Show success page
+            document.getElementById('successPage').style.display = 'flex';
             
             // Reset form
             this.reset();
             
-            // Scroll to success message
-            document.getElementById('successMessage').scrollIntoView({behavior: 'smooth'});
-            
-            // Hide success message after 300seconds
+            // Hide success page after 300 seconds
             setTimeout(() => {
-                document.getElementById('successMessage').style.display = 'none';
-            }, 600000);
+                document.getElementById('successPage').style.display = 'none';
+            }, 300000);
         });
     </script>
 </body>
