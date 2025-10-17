@@ -1,0 +1,138 @@
+{
+  "title": "Prophet Stephen Kpodo A. Partnership Form",
+  "logo": "images/Monday.png",
+  "header": {
+    "welcome_message": "WELCOME TO PROPHET STEPHEN KPODO A. PARTNERS' PAGE",
+    "title": "PARTNERSHIP FORM",
+    "description": "Fill out the form below to confirm your partnership with the prophet"
+  },
+  "form": {
+    "action": "https://docs.google.com/forms/d/e/1FAIpQLSfw1Q-08FMTUS6Rw0a6oHQuJVHqmyjp4ypcyEApqLogQRfOSA/formResponse",
+    "method": "POST",
+    "target": "hiddenFrame",
+    "sections": [
+      {
+        "title": "Personal Detail",
+        "fields": [
+          {
+            "label": "Surname",
+            "type": "text",
+            "name": "entry.1299642018",
+            "required": true,
+            "placeholder": "Surname",
+            "icon": "fas fa-user"
+          },
+          {
+            "label": "First Name",
+            "type": "text",
+            "name": "entry.1263795737",
+            "required": true,
+            "placeholder": "Enter First names",
+            "icon": "fas fa-user-circle"
+          },
+          {
+            "label": "Gender",
+            "type": "select",
+            "name": "entry.1889561578",
+            "required": true,
+            "options": [
+              {"value": "", "label": "", "disabled": true, "selected": true},
+              {"value": "M", "label": "Male"},
+              {"value": "F", "label": "Female"}
+            ],
+            "icon": "fas fa-restroom"
+          },
+          {
+            "label": "Location",
+            "type": "text",
+            "name": "entry.1848737444",
+            "required": true,
+            "icon": "fas fa-map-location-dot"
+          },
+          {
+            "label": "Contact",
+            "type": "tel",
+            "name": "entry.1192771947",
+            "required": true,
+            "placeholder": "+233546712356",
+            "icon": "fas fa-phone-alt"
+          },
+          {
+            "label": "Email Address",
+            "type": "email",
+            "name": "entry.131065789",
+            "required": true,
+            "placeholder": "Enter your email address",
+            "icon": "fas fa-envelope"
+          }
+        ]
+      },
+      {
+        "title": "Partnership Agreement",
+        "fields": [
+          {
+            "label": "Amount GH¢",
+            "type": "number",
+            "name": "entry.343312164",
+            "required": true,
+            "placeholder": "Enter amount",
+            "step": "0.1",
+            "min": "0",
+            "icon": "fas fa-money-bill"
+          },
+          {
+            "label": "Do you need a Reminder?",
+            "type": "select",
+            "name": "entry.101927143",
+            "required": true,
+            "options": [
+              {"value": "", "label": "", "disabled": true, "selected": true},
+              {"value": "YES", "label": "YES"},
+              {"value": "NO", "label": "NO"}
+            ],
+            "icon": "fas fa-calendar-alt"
+          },
+          {
+            "label": "Remind me by",
+            "type": "select",
+            "name": "entry.1653791655",
+            "required": true,
+            "options": [
+              {"value": "", "label": "", "disabled": true, "selected": true},
+              {"value": "WhatsApp", "label": "WhatsApp"},
+              {"value": "Phone Call", "label": "Phone Call"},
+              {"value": "SMS", "label": "SMS"},
+              {"value": "Email", "label": "Email"}
+            ],
+            "icon": "fas fa-bell"
+          },
+          {
+            "label": "Terms & Conditions Agreement",
+            "type": "checkbox",
+            "name": "entry.517536385",
+            "value": "AGREE",
+            "required": true,
+            "text": "I agree to the Monthly Partnership Terms and Conditions"
+          }
+        ]
+      }
+    ],
+    "submit_button": {
+      "text": "Submit"
+    },
+    "note": "Thank you for your partnership"
+  },
+  "success_page": {
+    "icon": "fas fa-check-circle",
+    "title": "Partnership Submitted Successfully!",
+    "message": "Thank you for your partnership with Prophet Stephen Kpodo A. Your support is greatly appreciated.",
+    "whatsapp_button": {
+      "text": "Join WhatsApp Group",
+      "link": "https://chat.whatsapp.com/Ha3v5uYuRZe9nVidNvDQPs?mode=wwt",
+      "icon": "fab fa-whatsapp"
+    }
+  },
+  "footer": {
+    "text": "© 2025 Ska Digital Hub. All rights reserved."
+  }
+}
