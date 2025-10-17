@@ -7,7 +7,9 @@ self.addEventListener('install', (event) => {
         '/ska/index.html',
         '/ska/images/Monday.png',
         '/ska/images/favicon.ico',
-        '/ska/manifest.json'
+        '/ska/manifest.json',
+        '/ska/images/Monday-192x192.png',
+        '/ska/images/Monday-512x512.png'
       ]);
     })
   );
