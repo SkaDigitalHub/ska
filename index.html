@@ -495,6 +495,13 @@
     </footer>
 
     <script>
+        
+       //sw.js
+        if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/ska/sw.js');
+     }
+
+        
         // Handle form submission and show success message
         document.querySelector('form').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -530,9 +537,86 @@
                 document.getElementById('successPage').style.display = 'none';
             }, 300000);
         });
+
+        
+
+        // Install App
+
+    let deferredPrompt; // Stores the install prompt
+    const installBanner = document.createElement('div');
+    installBanner.id = 'install-banner';
+    installBanner.innerHTML = `
+        <div style="background: linear-gradient(to right, #6C4DF6, #FF7BA9); color: white; padding: 15px; text-align: center; border-radius: 12px; margin: 20px; box-shadow: 0 4px 12px rgba(108, 77, 246, 0.3);">
+            <p><strong>Install Prophet Kpodo Partnership App</strong> for quick access! 📱</p>
+            <button id="install-btn" style="background: #25D366; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; margin-right: 10px;">Install Now</button>
+            <button id="dismiss-btn" style="background: transparent; color: white; border: 1px solid white; padding: 10px 20px; border-radius: 8px; cursor: pointer;">Later</button>
+        </div>
+    `;
+    installBanner.style.position = 'fixed';
+    installBanner.style.top = '20px';
+    installBanner.style.right = '20px';
+    installBanner.style.left = '20px';
+    installBanner.style.zIndex = '10000';
+    installBanner.style.display = 'none'; // Hidden by default
+
+    // Listen for the beforeinstallprompt event
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault(); // Prevent default browser prompt
+        deferredPrompt = e; // Store it for later
+        showInstallBanner(); // Auto-show after delay
+    });
+
+    // Function to show the banner (automatic after 5 seconds)
+    function showInstallBanner() {
+        setTimeout(() => {
+            if (deferredPrompt && !window.matchMedia('(display-mode: standalone)').matches) { // Don't show if already installed
+                document.body.appendChild(installBanner);
+                installBanner.style.display = 'block';
+            }
+        }, 5000); // 5-second delay for "automatic" feel
+    }
+
+    // Install button click handler
+    document.addEventListener('click', (e) => {
+        if (e.target.id === 'install-btn') {
+            if (deferredPrompt) {
+                deferredPrompt.prompt(); // Show native install prompt
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('PWA installed!');
+                        deferredPrompt = null; // Clear it
+                    }
+                    hideInstallBanner();
+                });
+            }
+        } else if (e.target.id === 'dismiss-btn') {
+            hideInstallBanner();
+        }
+    });
+
+    // Hide banner function
+    function hideInstallBanner() {
+        if (installBanner.parentNode) {
+            installBanner.parentNode.removeChild(installBanner);
+        }
+    }
+
+    // Hide banner if already installed (e.g., launched as app)
+    window.addEventListener('appinstalled', () => {
+        hideInstallBanner();
+    });
+
+    // For iOS: Show manual instructions if no prompt support
+    if (!window.beforeinstallprompt && /iPad|iPhone|iPod/.test(navigator.userAgent)) {
+        setTimeout(() => {
+            alert('To install: Tap Share > Add to Home Screen. Enjoy the app!');
+        }, 5000);
+    }
+
     </script>
 </body>
 </html>
+
 
 
 
