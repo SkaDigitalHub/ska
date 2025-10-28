@@ -5,7 +5,11 @@ self.addEventListener('install', (event) => {
       return cache.addAll([
         '/ska/',
         '/ska/index.html',
+        '/ska/partners.html',
+        '/ska/volunteers.html',
         '/ska/images/Monday.png',
+        '/ska/images/banner.png',
+        '/ska/images/rhema.png',
         '/ska/images/favicon.ico',
         '/ska/manifest.json',
         '/ska/images/Monday-192x192.png',
