@@ -523,7 +523,7 @@ installBanner.innerHTML = `
     <button id="dismiss-btn" style="background: transparent; color: white; border: 1px solid white; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600;">Later</button>
   </div>
 `;
-installBanner.style.cssText = 'position: fixed; bottom: 20px; left: 20px; right: 20px; z-index: 9999; display: none;';
+installBanner.style.cssText = 'position: fixed; top: 20px; left: 20px; right: 20px; z-index: 9999; display: none;';
 
 // === 1. Android: beforeinstallprompt ===
 window.addEventListener('beforeinstallprompt', (e) => {
