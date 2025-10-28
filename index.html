@@ -512,75 +512,92 @@ navigator.serviceWorker.register('/ska/sw.js').then(reg => {
             }
         });
 
-          // Install App// === PWA Install Logic (Android + iOS) ===
-let deferredPrompt; // For Android
-const installBanner = document.createElement('div');
-installBanner.id = 'install-banner';
-installBanner.innerHTML = `
-  <div style="background: linear-gradient(to right, #6C4DF6, #FF7BA9); color: white; padding: 15px; text-align: center; border-radius: 12px; margin: 20px; box-shadow: 0 4px 12px rgba(108, 77, 246, 0.3); position: relative;">
-    <p style="margin: 0 0 10px;"><strong>Install Prophet Stephen Kpodo A. App</strong> for quick access! 📱</p>
-    <button id="install-btn" style="background: #25D366; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; margin-right: 10px; font-weight: 600;">Install Now</button>
-    <button id="dismiss-btn" style="background: transparent; color: white; border: 1px solid white; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600;">Later</button>
-  </div>
-`;
-installBanner.style.cssText = 'position: fixed; top: 20px; left: 20px; right: 20px; z-index: 9999; display: none;';
+          
+/* ---------- 1. Global variables ---------- */
+let deferredPrompt;               // Android only
+const BANNER_ID = 'pwa-install-banner';
+let bannerShown = false;          // prevent double banners
 
-// === 1. Android: beforeinstallprompt ===
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  showInstallBanner(); // Auto-show after delay
-});
+/* ---------- 2. Create the banner (once) ---------- */
+function createBanner() {
+  if (document.getElementById(BANNER_ID)) return;   // already exists
 
-// === 2. iOS Detection ===
-const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-const isInStandalone = window.matchMedia('(display-mode: standalone)').matches;
-
-// === 3. Show Banner (Android OR iOS) ===
-function showInstallBanner() {
-  setTimeout(() => {
-    const shouldShow = 
-      (deferredPrompt && !isInStandalone) ||  // Android: has prompt
-      (isIOS && !isInStandalone);             // iOS: no prompt, but not installed
-
-    if (shouldShow) {
-      document.body.appendChild(installBanner);
-      installBanner.style.display = 'block';
-    }
-  }, 5000);
+  const banner = document.createElement('div');
+  banner.id = BANNER_ID;
+  banner.style.cssText = `
+    position:fixed; top:20px; left:20px; right:20px;
+    background:linear-gradient(to right,#6C4DF6,#FF7BA9);
+    color:#fff; padding:15px; text-align:center;
+    border-radius:12px; box-shadow:0 4px 12px rgba(108,77,246,.3);
+    z-index:9999; display:none;
+  `;
+  banner.innerHTML = `
+    <p style="margin:0 0 8px"><strong>Install Prophet Stephen Kpodo A. App</strong> for quick access! 📱</p>
+    <button id="install-btn" style="background:#25D366;color:#fff;border:none;
+            padding:8px 16px;border-radius:8px;margin-right:8px;cursor:pointer;">
+      Install Now
+    </button>
+    <button id="dismiss-btn" style="background:transparent;color:#fff;
+            border:1px solid #fff;padding:8px 16px;border-radius:8px;cursor:pointer;">
+      Later
+    </button>
+  `;
+  document.body.appendChild(banner);
 }
 
-// === 4. Install Button Click ===
-document.addEventListener('click', (e) => {
+/* ---------- 3. Show the banner ---------- */
+function showBanner() {
+  if (bannerShown) return;
+  createBanner();
+  const el = document.getElementById(BANNER_ID);
+  el.style.display = 'block';
+  bannerShown = true;
+}
+
+/* ---------- 4. Hide the banner ---------- */
+function hideBanner() {
+  const el = document.getElementById(BANNER_ID);
+  if (el) el.style.display = 'none';
+}
+
+/* ---------- 5. Android: beforeinstallprompt ---------- */
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();          // stop Chrome’s automatic banner
+  deferredPrompt = e;
+  setTimeout(showBanner, 5000);   // 5 s delay
+});
+
+/* ---------- 6. iOS detection & manual instructions ---------- */
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+
+/* Show banner **immediately** on iOS (no prompt) */
+if (isIOS && !isStandalone) {
+  setTimeout(showBanner, 5000);   // same 5 s delay as Android
+}
+
+/* ---------- 7. Click handling (Android + iOS) ---------- */
+document.addEventListener('click', e => {
   if (e.target.id === 'install-btn') {
     if (deferredPrompt) {
-      // Android: show native prompt
+      // Android – native prompt
       deferredPrompt.prompt();
-      deferredPrompt.userChoice.then(choice => {
-        if (choice.outcome === 'accepted') console.log('Installed!');
+      deferredPrompt.userChoice.then(() => {
         deferredPrompt = null;
+        hideBanner();
       });
     } else if (isIOS) {
-      // iOS: show instructions
-      alert('Tap the Share button below → "Add to Home Screen"');
+      // iOS – manual instructions
+      alert('Tap the **Share** button below → scroll → **Add to Home Screen**');
+      hideBanner();
     }
-    hideInstallBanner();
   } else if (e.target.id === 'dismiss-btn') {
-    hideInstallBanner();
+    hideBanner();
   }
 });
 
-function hideInstallBanner() {
-  if (installBanner.parentNode) {
-    installBanner.parentNode.removeChild(installBanner);
-  }
-}
-
-// === 5. Auto-show on iOS (even without prompt) ===
-if (isIOS && !isInStandalone) {
-  showInstallBanner(); // Force show after 5s
-}
-
+/* ---------- 8. Clean up when the PWA is installed ---------- */
+window.addEventListener('appinstalled', hideBanner);
         
     </script>
 </body>
