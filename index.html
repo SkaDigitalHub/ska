@@ -318,7 +318,7 @@
 </head>
 <body>
     <header>
-        <img class="banner" src="images/banner.png">
+        <img class="banner" src="images/banner.png" alt="Rhema Experience Summit Banner">
         
         <p>Transforming lives through faith, service, and divine instruction</p>
     </header>
@@ -362,6 +362,15 @@
             </div>
         </div>
     </div>
+
+    <div id="customModal" class="custom-modal">
+    <div class="modal-content">
+        <div class="modal-icon" id="modalIcon"></div>
+        <h3 class="modal-title" id="modalTitle"></h3>
+        <p class="modal-message" id="modalMessage"></p>
+        <button class="modal-close" id="modalClose">Close</button>
+    </div>
+</div>
 
     <footer>
         <div class="footer-container">
@@ -553,11 +562,14 @@
     });
 
     // For iOS: Show manual instructions if no prompt support
-    if (!window.beforeinstallprompt && /iPad|iPhone|iPod/.test(navigator.userAgent)) {
-        setTimeout(() => {
-            alert('To install: Tap Share > Add to Home Screen. Enjoy the app!');
-        }, 5000);
-    }
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+const isInStandaloneMode = window.matchMedia('(display-mode: standalone)').matches;
+
+if (isIOS && !isInStandaloneMode) {
+    setTimeout(() => {
+        alert('To install: Tap Share > Add to Home Screen');
+    }, 5000);
+}
     </script>
 </body>
 </html>
