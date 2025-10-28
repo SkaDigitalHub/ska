@@ -15,6 +15,7 @@
     <!-- Meta for Social Media Sharing -->
     <meta name="theme-color" content="#6C4DF6">
     <meta name="msapplication-TileColor" content="#6C4DF6">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
     <style>
         :root {
@@ -151,6 +152,16 @@
             z-index: 1;
         }
 
+        .banner {
+            height: auto;
+            width: 100%;
+        }
+
+        .banner:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(108, 77, 246, 0.6);
+        }
+        
         footer {
             background: rgba(15, 15, 26, 0.9);
             backdrop-filter: blur(10px);
@@ -212,6 +223,7 @@
 </head>
 <body>
     <header>
+        <img class="banner" src="images/rhema.png">
         <h1>Rhema Experience Summit</h1>
         <p>Transforming lives through faith, service, and divine instruction</p>
     </header>
