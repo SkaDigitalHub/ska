@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prophet Stephen Kpodo A. Partnership Form</title>
+     <!-- PWA Manifest -->
+    <link rel="manifest" href="/ska/manifest.json">
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/ska/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/ska/images/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/ska/images/Monday-192x192.png">
+    
+    <!-- Meta for Social Media Sharing -->
+    <meta name="theme-color" content="#6C4DF6">
+    <meta name="msapplication-TileColor" content="#6C4DF6">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6C4DF6;
+            --secondary: #FF7BA9;
+            --accent: #4DF6C8;
+            --dark: #0F0F1A;
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --glow: 0 0 20px rgba(108, 77, 246, 0.5);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--dark) 0%, #1A1A2E 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: white;
+        }
+        
+        .container {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: var(--glow);
+            width: 100%;
+            max-width: 600px;
+            overflow: hidden;
+            padding: 30px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-weight: 700;
+            font-size: 32px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .form-container {
+            padding: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .required::after {
+            content: " *";
+            color: var(--secondary);
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            font-size: 16px;
+            color: white;
+            transition: all 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 77, 246, 0.3);
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 16px;
+            background-color: #1A1A2E;
+        }
+
+        .iframe-container, iframe {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: var(--glow);
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            padding: 0;
+            overflow: hidden;
+            border-radius: 4px;
+        }
+    
+
+        button {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 16px 20px;
+            width: 100%;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(108, 77, 246, 0.4);
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(108, 77, 246, 0.6);
+        }
+        
+        .success-page {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--dark) 0%, #1A1A2E 100%);
+            z-index: 1000;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .success-container {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: var(--glow);
+            width: 100%;
+            max-width: 500px;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .success-container i {
+            font-size: 80px;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+        
+        .success-container h2 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: white;
+        }
+        
+        .success-container p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        .whatsapp-button {
+            display: inline-block;
+            background: #25D366;
+            color: white;
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 18px;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .whatsapp-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.5);
+        }
+        
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
+        }
+        
+        .form-note {
+            text-align: center;
+            margin-top: 15px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+        }
+        
+        .icon-input {
+            position: relative;
+        }
+        
+        .icon-input i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+        }
+        
+        .icon-input input {
+            padding-left: 45px;
+        }
+
+        .banner {
+            height: auto;
+            width: 100%;
+        }
+
+        .banner:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(108, 77, 246, 0.6);
+        }
+
+        .checkbox-group {
+    margin-top: 8px;
+}
+
+.checkbox-option {
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-left: 35px;
+    cursor: pointer;
+    font-size: 16px;
+    user-select: none;
+}
+
+.checkbox-option input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkbox-checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #fff;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.checkbox-option:hover input ~ .checkbox-checkmark {
+    border-color: #4CAF50;
+}
+
+.checkbox-option input:checked ~ .checkbox-checkmark {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+}
+
+.checkbox-checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.checkbox-option input:checked ~ .checkbox-checkmark:after {
+    display: block;
+}
+        
+         @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 28px;
+            }
+            
+            .success-container {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div>
+    <img class="banner" src="images/Monday.png">
+</div>
+    <div class="container">
+        <div class="header">
+            <br>
+            <h5>WELCOME TO THE RHEMAEXPERIENCE VOLUNTEERS' PAGE</h5>
+            <h1>VOLUNTEER FORM</h1> 
+            <p>Fill out the form below to confirm your commitment</p>
+        </div>
+        <br>
+        
+        <div class="form-container">
+            <!-- Form with direct POST action to Google Forms -->
+            <form 
+                action="https://docs.google.com/forms/d/e/1FAIpQLScxXdyttpWBCPCtyjCLdF-R2nuventqtyKw1Un3lHxFVAU1KA/formResponse" 
+                method="POST"
+                target="hiddenFrame"
+            >
+            <h4>--- Personal Detail ---</h4>
+            <br>
+                <div class="form-group">
+                    <label for="surname" class="required">Surname</label>
+                    <div class="icon-input">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="surname" name="entry.1299642018" required placeholder="Surname">
+                    </div>
+                </div>
+                
+                 <div class="form-group">
+                    <label for="firstname" class="required">First Name</label>
+                    <div class="icon-input">
+                        <i class="fas fa-user-circle"></i>
+                        <input type="text" id="firstname" name="entry.1263795737" placeholder="Enter First names">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="sex" class="required">Gender</label>
+                    <div class="icon-input">
+                    <i class="fas fa-restroom"></i>
+                       <select id="sex" name="entry.1889561578" required>
+                           <option value="" disabled selected></option>
+                           <option value="M">Male</option>
+                           <option value="F">Female</option>
+                       </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="location" class="required">location</label>
+                    <div class="icon-input">
+                         <i class="fas fa-map-location-dot"></i>
+                         <input type="text" id="location" name="entry.1848737444" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone" class="required">Contact</label>
+                    <div class="icon-input">
+                       <i class="fas fa-phone-alt"></i>
+                       <input type="tel" id="phone" name="entry.1192771947" placeholder="+233546712356" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="required">Email Address</label>
+                    <div class="icon-input">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" name="entry.131065789" required placeholder="Enter your email address">
+                    </div>
+                </div>
+
+                <br>
+                <br>
+                <h2 style="margin: 0 auto; text-align: center;">--- Agreement ---</h2>
+                <br>
+
+                <div class="form-group">
+                    <label for="amount" class="required">Amount GH¢</label>
+                    <div class="icon-input">
+                        <i class="fas fa-money-bill"></i>
+                        <input type="number" id="amount" name="entry.343312164" required placeholder="Enter amount" step="0.1" min="0">
+                    </div>
+                </div>
+    
+                <div class="form-group">
+                    <label for="availability" class="required">Will you be <b>Available</b> all-time?</label>
+                    <div class="icon-input">
+                        <i class="fas fa-calendar-alt"></i>
+                        <select id="availability" name="entry.101927143" required>
+                           <option value="" disabled selected></option>
+                           <option value="YES">YES</option>
+                           <option value="NO">NO</option>
+                        </select>   
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="status" class="required">Remind me by</label>
+                    <div class="icon-input">
+                        <i class="fas fa-bell"></i>
+                        <select id="status" name="entry.1653791655" required>
+                           <option value="" disabled selected></option>
+                           <option value="WhatsApp">WhatsApp</option>
+                           <option value="Phone Call">Phone Call</option>
+                           <option value="SMS">SMS</option>
+                           <option value="Email">Email</option>
+                        </select>   
+                    </div>
+                </div>
+
+                <div class="form-group">
+                   <label for="agree" class="required">Terms & Conditions Agreement</label>
+                   <div class="checkbox-group">
+                       <label class="checkbox-option">
+                          <input id="agree" type="checkbox" name="entry.517536385" value="AGREE" required>
+                          <span class="checkbox-checkmark"></span>
+                          I agree to the Voluntary Terms and Conditions
+                   </label>
+                   </div>
+                </div>
+    
+ 
+                <button type="submit">Submit</button>
+                
+                <p class="form-note">Thank you for volunteering!</p>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Hidden iframe to handle form submission without leaving the page -->
+    <iframe name="hiddenFrame" style="display: none;"></iframe>
+    
+    <!-- Success Page (appears as new page) -->
+    <div class="success-page" id="successPage">
+        <div class="success-container">
+            <i class="fas fa-check-circle"></i>
+            <h2>Submitted Successfully!</h2>
+            <p>Your voluntary service to be part of <b>RHEMAEXPERIENCE SUMMIT</b> workers will be confirmed in less 24 hours.</p>
+            <p>Click the button below to confirm your WhatsApp number:</p>
+            <a class="whatsapp-button" href="https://wa.me/233241717357" target="_blank">
+                <i class="fab fa-whatsapp"></i> WhatsApp 
+            </a>
+        </div>
+    </div>
+
+    
+    <footer>
+        <p>© 2025 Ska Digital Hub. All rights reserved.</p>
+    </footer>
+
+    <script>
+        
+       //sw.js
+        if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/ska/sw.js');
+     }
+
+        
+        // Handle form submission and show success message
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Basic form validation
+            const surname = document.getElementById('surname').value;
+            const firstname = document.getElementById('firstname').value;
+            const location = document.getElementById('location').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+            const amount = document.getElementById('amount').value;
+            const reminder = document.getElementById('reminder').value;
+            const status = document.getElementById('status').value;
+            const agree = document.getElementById('agree').checked;
+            
+            
+            if (!surname || !firstname || !location || !phone || !email || !amount || !reminder || !status || !agree) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            // Submit the form
+            this.submit();
+            
+            // Show success page
+            document.getElementById('successPage').style.display = 'flex';
+            
+            // Reset form
+            this.reset();
+            
+            // Hide success page after 300 seconds
+            setTimeout(() => {
+                document.getElementById('successPage').style.display = 'none';
+            }, 300000);
+        });
+
+        
+
+        // Install App
+
+    let deferredPrompt; // Stores the install prompt
+    const installBanner = document.createElement('div');
+    installBanner.id = 'install-banner';
+    installBanner.innerHTML = `
+        <div style="background: linear-gradient(to right, #6C4DF6, #FF7BA9); color: white; padding: 15px; text-align: center; border-radius: 12px; margin: 20px; box-shadow: 0 4px 12px rgba(108, 77, 246, 0.3);">
+            <p><strong>Install Prophet Kpodo Partnership App</strong> for quick access! 📱</p><br>
+            <button id="install-btn" style="background: #25D366; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; margin-right: 10px;">Install Now</button>
+            <button id="dismiss-btn" style="background: transparent; color: white; border: 1px solid white; padding: 10px 20px; border-radius: 8px; cursor: pointer;">Later</button>
+        </div>
+    `;
+    installBanner.style.position = 'fixed';
+    installBanner.style.top = '20px';
+    installBanner.style.right = '20px';
+    installBanner.style.left = '20px';
+    installBanner.style.zIndex = '10000';
+    installBanner.style.display = 'none'; // Hidden by default
+
+    // Listen for the beforeinstallprompt event
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault(); // Prevent default browser prompt
+        deferredPrompt = e; // Store it for later
+        showInstallBanner(); // Auto-show after delay
+    });
+
+    // Function to show the banner (automatic after 5 seconds)
+    function showInstallBanner() {
+        setTimeout(() => {
+            if (deferredPrompt && !window.matchMedia('(display-mode: standalone)').matches) { // Don't show if already installed
+                document.body.appendChild(installBanner);
+                installBanner.style.display = 'block';
+            }
+        }, 5000); // 5-second delay for "automatic" feel
+    }
+
+    // Install button click handler
+    document.addEventListener('click', (e) => {
+        if (e.target.id === 'install-btn') {
+            if (deferredPrompt) {
+                deferredPrompt.prompt(); // Show native install prompt
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('PWA installed!');
+                        deferredPrompt = null; // Clear it
+                    }
+                    hideInstallBanner();
+                });
+            }
+        } else if (e.target.id === 'dismiss-btn') {
+            hideInstallBanner();
+        }
+    });
+
+    // Hide banner function
+    function hideInstallBanner() {
+        if (installBanner.parentNode) {
+            installBanner.parentNode.removeChild(installBanner);
+        }
+    }
+
+    // Hide banner if already installed (e.g., launched as app)
+    window.addEventListener('appinstalled', () => {
+        hideInstallBanner();
+    });
+
+    // For iOS: Show manual instructions if no prompt support
+    if (!window.beforeinstallprompt && /iPad|iPhone|iPod/.test(navigator.userAgent)) {
+        setTimeout(() => {
+            alert('To install: Tap Share > Add to Home Screen. Enjoy the app!');
+        }, 5000);
+    }
+
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
