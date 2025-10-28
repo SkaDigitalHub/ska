@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prophet Stephen Kpodo A. Partnership Form</title>
+    <title>Rhema Experience Summit 2025</title>
      <!-- PWA Manifest -->
     <link rel="manifest" href="/ska/manifest.json">
     
@@ -343,7 +343,7 @@
 </head>
 <body>
 <div>
-    <img class="banner" src="images/Monday.png">
+    <img class="banner" src="images/rhema.png">
 </div>
     <div class="container">
         <div class="header">
@@ -420,13 +420,29 @@
                 <h2 style="margin: 0 auto; text-align: center;">--- Agreement ---</h2>
                 <br>
 
-                <div class="form-group">
-                    <label for="amount" class="required">Amount GH¢</label>
-                    <div class="icon-input">
-                        <i class="fas fa-money-bill"></i>
-                        <input type="number" id="amount" name="entry.343312164" required placeholder="Enter amount" step="0.1" min="0">
-                    </div>
-                </div>
+                 <div class="form-group">
+                  <label for="department">Department</label>
+                     <div class="icon-input">
+                        <i class="fas fa-briefcase"></i>
+                <select id="department" name="entry.343312164" required>
+                    <option value="" disabled selected>Select your department</option>
+                    <option value="Prayer">Prayer</option>
+                    <option value="Evangelism">Evangelism</option>
+                    <option value="Music">Music</option>
+                    <option value="Organizational">Organizational</option>
+                    <option value="Creative Art">Creative Art</option>
+                    <option value="Ushering">Ushering</option>
+                    <option value="Secretarial">Secretarial</option>
+                    <option value="Financial">Financial</option>
+                    <option value="Media">Media</option>
+                    <option value="Sound">Sound</option>
+                    <option value="I.T">I.T</option>
+                    <option value="Event Planning">Event Planning</option>
+                    <option value="Hospitality Management Team —Caregivers">Hospitality Management Team —Caregivers</option>
+                    <option value="Security Team">Security Team</option>
+                    <option value="None">None</option>
+                </select>
+            </div>
     
                 <div class="form-group">
                     <label for="availability" class="required">Will you be <b>Available</b> all-time?</label>
@@ -483,7 +499,7 @@
             <h2>Submitted Successfully!</h2>
             <p>Your voluntary service to be part of <b>RHEMAEXPERIENCE SUMMIT</b> workers will be confirmed in less 24 hours.</p>
             <p>Click the button below to confirm your WhatsApp number:</p>
-            <a class="whatsapp-button" href="https://wa.me/233241717357" target="_blank">
+            <a class="whatsapp-button" href="https://wa.me/233256049149" target="_blank">
                 <i class="fab fa-whatsapp"></i> WhatsApp 
             </a>
         </div>
@@ -512,13 +528,13 @@
             const location = document.getElementById('location').value;
             const phone = document.getElementById('phone').value;
             const email = document.getElementById('email').value;
-            const amount = document.getElementById('amount').value;
-            const reminder = document.getElementById('reminder').value;
+            const amount = document.getElementById('department').value;
+            const reminder = document.getElementById('availability').value;
             const status = document.getElementById('status').value;
             const agree = document.getElementById('agree').checked;
             
             
-            if (!surname || !firstname || !location || !phone || !email || !amount || !reminder || !status || !agree) {
+            if (!surname || !firstname || !location || !phone || !email || !department || !availability || !status || !agree) {
                 alert('Please fill in all required fields.');
                 return;
             }
