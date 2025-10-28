@@ -512,81 +512,76 @@ navigator.serviceWorker.register('/ska/sw.js').then(reg => {
             }
         });
 
-          // Install App
+          // Install App// === PWA Install Logic (Android + iOS) ===
+let deferredPrompt; // For Android
+const installBanner = document.createElement('div');
+installBanner.id = 'install-banner';
+installBanner.innerHTML = `
+  <div style="background: linear-gradient(to right, #6C4DF6, #FF7BA9); color: white; padding: 15px; text-align: center; border-radius: 12px; margin: 20px; box-shadow: 0 4px 12px rgba(108, 77, 246, 0.3); position: relative;">
+    <p style="margin: 0 0 10px;"><strong>Install Prophet Stephen Kpodo A. App</strong> for quick access! (Smartphone)</p>
+    <button id="install-btn" style="background: #25D366; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; margin-right: 10px; font-weight: 600;">Install Now</button>
+    <button id="dismiss-btn" style="background: transparent; color: white; border: 1px solid white; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600;">Later</button>
+  </div>
+`;
+installBanner.style.cssText = 'position: fixed; bottom: 20px; left: 20px; right: 20px; z-index: 9999; display: none;';
 
-    let deferredPrompt; // Stores the install prompt
-    const installBanner = document.createElement('div');
-    installBanner.id = 'install-banner';
-    installBanner.innerHTML = `
-        <div style="background: linear-gradient(to right, #6C4DF6, #FF7BA9); color: white; padding: 15px; text-align: center; border-radius: 12px; margin: 20px; box-shadow: 0 4px 12px rgba(108, 77, 246, 0.3); position: relative;">
-                <p style="margin: 0 0 10px;"><strong>Install Prophet Stephen Kpodo A. App</strong> for quick access! 📱</p><br>
-            <button id="install-btn" style="background: #25D366; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; margin-right: 10px; font-weight: 600;">Install Now</button>
-                <button id="dismiss-btn" style="background: transparent; color: white; border: 1px solid white; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600;">Later</button>
-            </div>
-    `;
-    installBanner.style.position = 'fixed';
-    installBanner.style.top = '20px';
-    installBanner.style.right = '20px';
-    installBanner.style.left = '20px';
-    installBanner.style.zIndex = '10000';
-    installBanner.style.display = 'none'; // Hidden by default
+// === 1. Android: beforeinstallprompt ===
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  showInstallBanner(); // Auto-show after delay
+});
 
-    // Listen for the beforeinstallprompt event
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault(); // Prevent default browser prompt
-        deferredPrompt = e; // Store it for later
-        showInstallBanner(); // Auto-show after delay
-    });
+// === 2. iOS Detection ===
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+const isInStandalone = window.matchMedia('(display-mode: standalone)').matches;
 
-    // Function to show the banner (automatic after 5 seconds)
-    function showInstallBanner() {
-        setTimeout(() => {
-            if (deferredPrompt && !window.matchMedia('(display-mode: standalone)').matches) { // Don't show if already installed
-                document.body.appendChild(installBanner);
-                installBanner.style.display = 'block';
-            }
-        }, 5000); // 5-second delay for "automatic" feel
+// === 3. Show Banner (Android OR iOS) ===
+function showInstallBanner() {
+  setTimeout(() => {
+    const shouldShow = 
+      (deferredPrompt && !isInStandalone) ||  // Android: has prompt
+      (isIOS && !isInStandalone);             // iOS: no prompt, but not installed
+
+    if (shouldShow) {
+      document.body.appendChild(installBanner);
+      installBanner.style.display = 'block';
     }
-
-    // Install button click handler
-    document.addEventListener('click', (e) => {
-        if (e.target.id === 'install-btn') {
-            if (deferredPrompt) {
-                deferredPrompt.prompt(); // Show native install prompt
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('PWA installed!');
-                        deferredPrompt = null; // Clear it
-                    }
-                    hideInstallBanner();
-                });
-            }
-        } else if (e.target.id === 'dismiss-btn') {
-            hideInstallBanner();
-        }
-    });
-
-    // Hide banner function
-    function hideInstallBanner() {
-        if (installBanner.parentNode) {
-            installBanner.parentNode.removeChild(installBanner);
-        }
-    }
-
-    // Hide banner if already installed (e.g., launched as app)
-    window.addEventListener('appinstalled', () => {
-        hideInstallBanner();
-    });
-
-    // For iOS: Show manual instructions if no prompt support
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-const isInStandaloneMode = window.matchMedia('(display-mode: standalone)').matches;
-
-if (isIOS && !isInStandaloneMode) {
-    setTimeout(() => {
-        alert('To install: Tap Share > Add to Home Screen');
-    }, 5000);
+  }, 5000);
 }
+
+// === 4. Install Button Click ===
+document.addEventListener('click', (e) => {
+  if (e.target.id === 'install-btn') {
+    if (deferredPrompt) {
+      // Android: show native prompt
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(choice => {
+        if (choice.outcome === 'accepted') console.log('Installed!');
+        deferredPrompt = null;
+      });
+    } else if (isIOS) {
+      // iOS: show instructions
+      alert('Tap the Share button below → "Add to Home Screen"');
+    }
+    hideInstallBanner();
+  } else if (e.target.id === 'dismiss-btn') {
+    hideInstallBanner();
+  }
+});
+
+function hideInstallBanner() {
+  if (installBanner.parentNode) {
+    installBanner.parentNode.removeChild(installBanner);
+  }
+}
+
+// === 5. Auto-show on iOS (even without prompt) ===
+if (isIOS && !isInStandalone) {
+  showInstallBanner(); // Force show after 5s
+}
+
+        
     </script>
 </body>
 </html>
