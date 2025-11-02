@@ -6,7 +6,6 @@ const urlsToCache = [
   '/ska/index.html',
   '/ska/pages/register.html',
   '/ska/pages/partners.html',
-  '/ska/pages/volunteers.html',
   '/ska/pages/prophetic.html',
   '/ska/images/Monday.png',
   '/ska/images/banner.png',
