@@ -1,5 +1,5 @@
 // sw.js
-const CACHE_NAME = 'ska-app-v2.2';  // ← CHANGE THIS EVERY TIME YOU UPDATE
+const CACHE_NAME = 'ska-app-v3.2';  // ← CHANGE THIS EVERY TIME YOU UPDATE
 
 const urlsToCache = [
   '/ska/',
