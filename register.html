@@ -491,13 +491,16 @@
                         <label for="title">Title</label>
                         <select class="form-control" id="title" name="entry.1912978700" required>
                             <option value="" disabled selected>Select your title</option>
-                            <option value="Dr">Dr.</option>
-                            <option value="Mr">Mr.</option>
-                            <option value="Mrs">Mrs.</option>
-                            <option value="Miss">Miss.</option>
+                            <option value="Dr.">Dr.</option>
+                            <option value="Mr.">Mr.</option>
+                            <option value="Mrs.">Mrs.</option>
+                            <option value="Miss">Miss</option>
                             <option value="Pastor">Pastor</option>
-                            <option value="Rev">Rev.</option>
-                            <option value="Other">Other</option>
+                            <option value="Rev.">Rev.</option>
+                            <option value="Prophet">Prophet</option>
+                            <option value="Apostle">Apostle</option>
+                            <option value="Evangelist">Evangelist</option>
+                            <option value="Sir">Sir</option>
                         </select>
                     </div>
                     
@@ -515,7 +518,8 @@
                         <label for="contact">Contact (with Country Code)</label>
                         <div class="phone-input-container">
                             <select class="country-code-select" id="countryCode">
-                                <option value="+233" selected>+233 (Ghana)</option>
+                                <option value="" disabled selected>select country code</option>
+                                <option value="+233">+233 (Ghana)</option>
                                 <option value="+1">+1 (USA/Canada)</option>
                                 <option value="+44">+44 (UK)</option>
                                 <option value="+61">+61 (Australia)</option>
@@ -645,7 +649,7 @@
     </div>
     
     <div class="footer">
-        <p>© 2024 RHEMA EXPERIENCE SUMMIT. All rights reserved.</p>
+        <p>© 2025 RHEMA EXPERIENCE SUMMIT. All rights reserved.</p>
     </div>
 
     <!-- Hidden iframe for Google Forms submission -->
@@ -760,7 +764,7 @@
             qrImage.src = qrUrl;
             
             // Set logo
-            qrLogo.src = "https://skadigitalhub.github.io/grwcapp/myimg/Grwc.png";
+            qrLogo.src = "/ska/images/RME.png";
             
             // Store data for download
             qrImage.setAttribute('data-qr-data', qrData);
@@ -787,7 +791,7 @@
                     // Draw logo in center of QR code
                     const logo = new Image();
                     logo.crossOrigin = "Anonymous";
-                    logo.src = "https://skadigitalhub.github.io/grwcapp/myimg/Grwc.png";
+                    logo.src = "/ska/images/RME.png";
                     
                     logo.onload = function() {
                         // Draw logo in center of QR code
@@ -803,7 +807,7 @@
                         ctx.drawImage(logo, logoX, logoY, logoSize, logoSize);
                         
                         // Add "RHEMA EXPERIENCE SUMMIT" text at bottom
-                        ctx.fillStyle = '#0000ff';
+                        ctx.fillStyle = '#ff8c00';
                         ctx.font = 'bold 20px Arial';
                         ctx.textAlign = 'center';
                         ctx.fillText('RHEMA EXPERIENCE SUMMIT 2025', canvas.width / 2, 410);
