@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RME QR Attendance Scanner</title>
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f5f5f5; margin: 0; padding: 20px; }
+    h1 { text-align: center; }
+    .scanner-container { max-width: 600px; margin: 20px auto; background: #fff; padding: 20px; border-radius: 10px; }
+    video { width: 100%; border-radius: 10px; }
+    .attendance-list { margin-top: 20px; background: #fff; padding: 15px; border-radius: 10px; max-height: 300px; overflow-y: auto; }
+    .attendance-item { display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid #ddd; }
+    .status-present { color: green; font-weight: bold; }
+    .status-duplicate { color: red; font-weight: bold; }
+    #scanFeedback { text-align: center; margin: 10px 0; font-weight: bold; }
+    .success { color: green; }
+    .error { color: red; }
+    .controls { text-align: center; margin-top: 10px; }
+    .controls button { margin: 0 5px; padding: 8px 16px; }
+    .stats { max-width: 600px; margin: 20px auto; background: #fff; padding: 15px; border-radius: 10px; }
+  </style>
+</head>
+<body>
+  <h1>QR Attendance Scanner - RME</h1>
+  <div class="scanner-container">
+    <video id="video" playsinline></video>
+    <div class="controls">
+      <button id="startScanner">Start Scanner</button>
+      <button id="stopScanner" disabled>Stop Scanner</button>
+      <button id="exportCSV">Export CSV</button>
+    </div>
+    <div id="scanFeedback"></div>
+  </div>
+
+  <div class="attendance-list" id="attendanceList">
+    <p>No attendance records yet.</p>
+  </div>
+
+  <div class="stats" id="stats">
+    <strong>Daily Totals:</strong>
+    <div id="dailyTotals"></div>
+  </div>
+
+  <script>
+    const video = document.getElementById('video');
+    const startScannerBtn = document.getElementById('startScanner');
+    const stopScannerBtn = document.getElementById('stopScanner');
+    const exportBtn = document.getElementById('exportCSV');
+    const attendanceList = document.getElementById('attendanceList');
+    const scanFeedback = document.getElementById('scanFeedback');
+    const dailyTotalsEl = document.getElementById('dailyTotals');
+
+    let stream = null;
+    let scanning = false;
+    let animationFrameId = null;
+    let attendanceRecords = JSON.parse(localStorage.getItem("attendanceRecords")) || [];
+    let scannedURLs = new Set(attendanceRecords.map(r => r.url));
+
+    // 🔹 Replace with your Google Form "formResponse" URL
+    const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSf8nXf1LDeeniE_GX6xXaZLr6VrWSqBDPGttW8JjZOJtZ3z4Q/formResponse";
+
+    // 🔹 Replace with your actual entry IDs
+    const NAME_ENTRY = "entry.466703974";
+    const CONTACT_ENTRY = "entry.612604998";
+    const LOCATION_ENTRY = "entry.138675639";
+    const EMAIL_ENTRY = "entry.518249278";
+    const MEMBERSHIP_ENTRY = "entry.1142685410";
+    
+    // Initialize the app
+    updateAttendanceList();
+    updateStats();
+
+    startScannerBtn.addEventListener('click', startScanner);
+    stopScannerBtn.addEventListener('click', stopScanner);
+    exportBtn.addEventListener('click', exportCSV);
+
+    async function startScanner() {
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+        video.srcObject = stream;
+        await video.play();
+        scanning = true;
+        scanFrame();
+        startScannerBtn.disabled = true;
+        stopScannerBtn.disabled = false;
+        showFeedback("Scanner started", "success");
+      } catch (err) {
+        console.error(err);
+        showFeedback("Camera error", "error");
+      }
+    }
+
+    function stopScanner() {
+      scanning = false;
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+      if (stream) stream.getTracks().forEach(t => t.stop());
+      startScannerBtn.disabled = false;
+      stopScannerBtn.disabled = true;
+      showFeedback("Scanner stopped", "success");
+    }
+
+    function scanFrame() {
+      if (!scanning) return;
+      if (video.readyState === video.HAVE_ENOUGH_DATA) {
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+        const code = jsQR(imageData.data, imageData.width, imageData.height);
+        if (code) processQRCode(code.data);
+      }
+      animationFrameId = requestAnimationFrame(scanFrame);
+    }
+
+    function processQRCode(data) {
+      if (!data.startsWith("http")) {
+        showFeedback("Invalid QR code", "error");
+        return;
+      }
+
+      let decodedURL;
+      try { decodedURL = decodeURIComponent(data); } catch { decodedURL = data; }
+
+      if (scannedURLs.has(decodedURL)) {
+        showFeedback("Duplicate scan rejected", "error");
+        return;
+      }
+
+      const info = extractInfoFromURL(decodedURL);
+      if (!info) {
+        showFeedback("Could not extract data", "error");
+        return;
+      }
+
+      const { name, contact, location, email, membership, timestamp } = info;
+      scannedURLs.add(decodedURL);
+
+      attendanceRecords.push({ name, contact, location, email, membership, timestamp, url: decodedURL });
+      
+      // Save to localStorage
+      localStorage.setItem("attendanceRecords", JSON.stringify(attendanceRecords));
+      
+      updateAttendanceList();
+      updateStats();
+      showFeedback(`Attendance recorded: ${name}`, "success");
+
+      // Submit to Google Form
+      submitToGoogleForm(name, contact, location, email, membership, timestamp);
+    }
+
+    function extractInfoFromURL(url) {
+      try {
+        const urlObj = new URL(url);
+        const params = new URLSearchParams(urlObj.search);
+        let name = params.get("entry.466703974") || "Unknown Attendee";
+        let contact = params.get("entry.612604998") || "Unknown Contact";
+        let location = params.get("entry.138675639") || "Unknown Location";
+        let email = params.get("entry.518249278") || "";
+        let membership = params.get("entry.1346483169") || "Unknown Membership";
+        const timestamp = new Date().toLocaleString();
+        return { name, contact, location, email, membership, timestamp };
+      } catch (e) {
+        console.error(e);
+        return null;
+      }
+    }
+
+    function submitToGoogleForm(name, contact, location, email, membership, timestamp) {
+      const formData = new FormData();
+      formData.append(NAME_ENTRY, name);
+      formData.append(CONTACT_ENTRY, contact);
+      formData.append(LOCATION_ENTRY, location);
+      formData.append(EMAIL_ENTRY, email);
+      formData.append(MEMBERSHIP_ENTRY, membership);
+
+      fetch(formURL, { method: "POST", body: formData, mode: "no-cors" })
+        .then(() => console.log("Submitted:", name, contact, location, email, membership, timestamp))
+        .catch(err => console.error("Submit error:", err));
+    }
+
+    function updateAttendanceList() {
+      if (attendanceRecords.length === 0) {
+        attendanceList.innerHTML = "<p>No attendance records yet.</p>";
+        return;
+      }
+      const items = attendanceRecords.map(r => `
+        <div class="attendance-item">
+          <div>
+            <strong>${r.name}</strong><br>
+            <strong>${r.contact}</strong><br>
+            <strong>${r.location}</strong><br>
+            ${r.email ? r.email + "<br>" : ""}
+            <strong>${r.membership}</strong><br>
+            <small>${r.timestamp}</small>
+          </div>
+          <div class="status-present">Present</div>
+        </div>
+      `).join("");
+      attendanceList.innerHTML = items;
+    }
+
+    function updateStats() {
+      const today = new Date().toLocaleDateString();
+      const todayRecords = attendanceRecords.filter(record => {
+        const recordDate = new Date(record.timestamp).toLocaleDateString();
+        return recordDate === today;
+      });
+      
+      const membershipCounts = {};
+      const locationCounts = {};
+
+      todayRecords.forEach(record => {
+        // Count by membership
+      membershipCounts[record.membership] = (membershipCounts[record.membership] || 0) + 1;
+  
+       // Count by location
+     locationCounts[record.location] = (locationCounts[record.location] || 0) + 1;
+    });
+
+     let statsHTML = `<p>Total Today: ${todayRecords.length}</p>`;
+
+      // Add membership counts
+     statsHTML += `<h4>By Membership:</h4>`;
+     for (const [membership, count] of Object.entries(membershipCounts)) {
+     statsHTML += `<p>${membership}: ${count}</p>`;
+   }
+
+     // Add location counts  
+    statsHTML += `<h4>By Location:</h4>`;
+    for (const [location, count] of Object.entries(locationCounts)) {
+    statsHTML += `<p>${location}: ${count}</p>`;
+   }
+
+    dailyTotalsEl.innerHTML = statsHTML;  
+    }
+
+    function exportCSV() {
+      if (attendanceRecords.length === 0) {
+        showFeedback("No data to export", "error");
+        return;
+      }
+
+      const headers = ["Timestamp", "Name", "Contact", "Location", "Email", "Membership"];
+      const csvContent = [
+        headers.join(","),
+        ...attendanceRecords.map(record => 
+          `"${record.timestamp}","${record.name}","${record.contact}","${record.location}","${record.email}","${record.membership}"`
+        )
+      ].join("\n");
+
+      const blob = new Blob([csvContent], { type: "text/csv" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `attendance-${new Date().toISOString().split('T')[0]}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      showFeedback("CSV exported successfully", "success");
+    }
+
+    function showFeedback(msg, type) {
+      scanFeedback.textContent = msg;
+      scanFeedback.className = type;
+      setTimeout(() => { scanFeedback.textContent = ""; }, 3000);
+    }
+  </script>
+</body>
+</html>
